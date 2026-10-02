@@ -519,7 +519,11 @@ Return<void> LegacyCameraProviderImpl_2_4::getVendorTags(
 Return<void> LegacyCameraProviderImpl_2_4::getCameraIdList(
         ICameraProvider::getCameraIdList_cb _hidl_cb) {
     std::vector<hidl_string> deviceNameList;
+    ALOGE("CamPrvdrDBG: getCameraIdList mCameraDeviceNames=%zu mLegacyCameras=%zu",
+            mCameraDeviceNames.size(), mLegacyCameras.size());
     for (auto const& deviceNamePair : mCameraDeviceNames) {
+        ALOGE("CamPrvdrDBG: entry id=%s name=%s status=%d", deviceNamePair.first.c_str(),
+                deviceNamePair.second.c_str(), (int)mCameraStatusMap[deviceNamePair.first]);
         if (!mLegacyCameras.contains(std::stoi(deviceNamePair.first))) {
             // External camera devices must be reported through the device status change callback,
             // not in this list.
@@ -544,6 +548,7 @@ Return<void> LegacyCameraProviderImpl_2_4::isSetTorchModeSupported(
 Return<void> LegacyCameraProviderImpl_2_4::getCameraDeviceInterface_V1_x(
         const hidl_string& cameraDeviceName,
         ICameraProvider::getCameraDeviceInterface_V1_x_cb _hidl_cb)  {
+    ALOGE("CamPrvdrDBG: getCameraDeviceInterface_V1_x name=%s", cameraDeviceName.c_str());
     std::string cameraId, deviceVersion;
     bool match = matchDeviceName(cameraDeviceName, &deviceVersion, &cameraId);
     if (!match) {

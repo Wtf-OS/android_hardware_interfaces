@@ -75,10 +75,6 @@ static bool registerExternalServiceImplementation(const std::string& libName,
 int main(int /* argc */, char* /* argv */ []) {
     signal(SIGPIPE, SIG_IGN);
 
-    if (::android::ProcessState::isVndservicemanagerEnabled()) {
-        ::android::ProcessState::initWithDriver("/dev/vndbinder");
-        ::android::ProcessState::self()->startThreadPool();
-    }
 
     ABinderProcess_setThreadPoolMaxThreadCount(1);
     ABinderProcess_startThreadPool();
