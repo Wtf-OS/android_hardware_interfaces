@@ -259,8 +259,8 @@ int NetBluetoothMgmt::rfkill(int block) {
 int NetBluetoothMgmt::openHci(int hci_interface) {
   ALOGI("opening hci interface %d", hci_interface);
 
-  // Block Bluetooth.
-  rfkill(1);
+  // HCI_USER opens the controller itself; Linux rejects a blocked radio.
+  rfkill(0);
 
   // Wait for the HCI interface to complete initialization or to come online.
   int hci = waitHciDev(hci_interface);
