@@ -100,3 +100,10 @@ apex {
         "sensors-default.xml", // vintf fragment
     ],
 }
+
+// Reuse the AOSP FMQ and scheduling implementation with device-specific sensors.
+filegroup {
+    name: "sensors_aidl_default_sources",
+    srcs: ["Sensors.cpp", "Sensor.cpp"],
+    visibility: ["//device/motorola/msm8916-common:__subpackages__"],
+}
