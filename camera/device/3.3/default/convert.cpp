@@ -32,6 +32,16 @@ using ::android::hardware::camera::device::V3_2::BufferUsageFlags;
 
 void convertToHidl(const Camera3Stream* src, HalStream* dst) {
     dst->overrideDataSpace = src->data_space;
+    // Undo the legacy mapping applied before calling HAL 3.3 or older.
+    switch (src->data_space) {
+        case HAL_DATASPACE_SRGB_LINEAR: dst->overrideDataSpace = HAL_DATASPACE_V0_SRGB_LINEAR; break;
+        case HAL_DATASPACE_SRGB: dst->overrideDataSpace = HAL_DATASPACE_V0_SRGB; break;
+        case HAL_DATASPACE_JFIF: dst->overrideDataSpace = HAL_DATASPACE_V0_JFIF; break;
+        case HAL_DATASPACE_BT601_625: dst->overrideDataSpace = HAL_DATASPACE_V0_BT601_625; break;
+        case HAL_DATASPACE_BT601_525: dst->overrideDataSpace = HAL_DATASPACE_V0_BT601_525; break;
+        case HAL_DATASPACE_BT709: dst->overrideDataSpace = HAL_DATASPACE_V0_BT709; break;
+        default: break;
+    }
     dst->v3_2.id = src->mId;
     dst->v3_2.overrideFormat = (PixelFormat) src->format;
     dst->v3_2.maxBuffers = src->max_buffers;
